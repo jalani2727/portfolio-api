@@ -1,13 +1,23 @@
-// // Pull in the Fastify library we installed with npm
-// // The { logger: true } option tells Fastify to print readable logs to your terminal
-// const fastify = require('fastify')({ logger: true });
+import Fastify from "fastify";
 
-// // A "route" is a specific URL path your server knows how to respond to.
+
+// The { logger: true } option tells Fastify to print readable logs to your terminal
+const fastify = Fastify({ logger: true });
+
+// Declare a route
 // // This one responds to GET requests at "/" — like visiting a homepage.
-// // We'll use this to confirm the server is alive.
-// fastify.get('/', async (request, reply) => {
-//   return { status: 'Server is running' };
-// });
+fastify.get('/', async (req, res) => {
+  return { status: 'testing' }
+})
+// Run the server
+try {
+  await fastify.listen({ port: 3000 })
+} catch {
+  fastify.log.error(err)
+  process.exit(1)
+}
+
+
 
 // // This route responds to POST requests at "/contact".
 // // POST is the HTTP method browsers use when submitting form data.
@@ -38,25 +48,25 @@
 // Baby's first server:
 
 
-const http = require('http');
-const url = require('url');
+// const http = require('http');
+// const url = require('url');
 
 
-const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true)
-  if (parsedUrl.pathname === '/') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write('yerr, ');
-    res.end('son');
-  } else if (parsedUrl.pathname === '/deadass') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write('dead');
-    res.end('ass, son');
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end();
-  }
+// const server = http.createServer((req, res) => {
+//   const parsedUrl = url.parse(req.url, true)
+//   if (parsedUrl.pathname === '/') {
+//     res.writeHead(200, { 'Content-Type': 'text/plain' });
+//     res.write('yerr, ');
+//     res.end('son');
+//   } else if (parsedUrl.pathname === '/deadass') {
+//     res.writeHead(200, { 'Content-Type': 'text/plain' });
+//     res.write('dead');
+//     res.end('ass, son');
+//   } else {
+//     res.writeHead(404, { 'Content-Type': 'text/plain' });
+//     res.end();
+//   }
 
-})
+// })
 
-server.listen(3000);
+// server.listen(3000);
