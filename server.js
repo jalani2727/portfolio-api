@@ -39,15 +39,24 @@
 
 
 const http = require('http');
+const url = require('url');
 
 
 const server = http.createServer((req, res) => {
-  const parsedUrl= url.parse(req.url, true)
-  if(parsedUrl.pathname === '/'){
-    res.writeHead(200, {'Content-Type': 'text/plain'});
+  const parsedUrl = url.parse(req.url, true)
+  if (parsedUrl.pathname === '/') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.write('yerr, ');
     res.end('son');
-  } 
+  } else if (parsedUrl.pathname === '/deadass') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write('dead');
+    res.end('ass, son');
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end();
+  }
+
 })
 
 server.listen(3000);
