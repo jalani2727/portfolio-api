@@ -6,9 +6,12 @@ const fastify = Fastify({ logger: true });
 
 // Declare a route
 // // This one responds to GET requests at "/" — like visiting a homepage.
-fastify.get('/', async (req, res) => {
-  return { status: 'testing' }
+fastify.get('/healthcheck', async (req, res) => {
+  return { status: 'ok' }
 })
+
+
+
 // Run the server
 try {
   await fastify.listen({ port: 3000 })
