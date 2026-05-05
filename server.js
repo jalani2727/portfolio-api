@@ -5,17 +5,34 @@ import Fastify from "fastify";
 const fastify = Fastify({ logger: true });
 
 // Declare a route
-// // This one responds to GET requests at "/" — like visiting a homepage.
-fastify.get('/healthcheck', async (req, res) => {
+// putting a /health route is good practice for monitoring the status of a server
+fastify.get('/health', async (req, res) => {
   return { status: 'ok' }
 })
 
-
+// Make a schema to check if the body has a name, email address, optional phone numner, and a message
+const formSchema = {
+  body: {
+    type: 'object',
+    required: ['name', 'email', 'message'],
+    properties: {
+      name: { type: 'string' },
+      email: { type: 'string', format: 'email' },
+      phone: { type: 'string' },
+      message: { type: 'string', minLength: 5 }
+    }
+  }
+}
+fastify.post('/contact', { schema: formSchema }, async (request, response) => {
+  let formData = request.body;
+  fastify.log.info({ formData }, 'Form Data arrived!');
+  return { status: 'form data arrived' }
+})
 
 // Run the server
 try {
   await fastify.listen({ port: 3000 })
-} catch {
+} catch (err) {
   fastify.log.error(err)
   process.exit(1)
 }
