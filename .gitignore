@@ -1,0 +1,16 @@
+node_modules
+package-lock.json
+.DS_Store
+dist
+dist-ssr
+*.local
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+.eslintcache
+todos.json
+Notes
