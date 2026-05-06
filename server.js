@@ -10,8 +10,8 @@ fastify.get('/health', async (req, res) => {
   return { status: 'ok' }
 })
 
-// Make a schema to check if the body has a name, email address, optional phone numner, and a message
-const formSchema = {
+// Make a schema to check if the body has a name, email address, optional phone numner, and a message like you defined on the frontend
+const formRequestSchema = {
   body: {
     type: 'object',
     required: ['name', 'email', 'message'],
@@ -23,19 +23,22 @@ const formSchema = {
     }
   }
 }
-fastify.post('/contact', { schema: formSchema }, async (request, response) => {
+fastify.post('/contact', { schema: formRequestSchema }, async (request, response) => {
   let formData = request.body;
   fastify.log.info({ formData }, 'Form Data arrived!');
   return { status: 'form data arrived' }
 })
 
 // Run the server
-try {
-  await fastify.listen({ port: 3000 })
-} catch (err) {
-  fastify.log.error(err)
-  process.exit(1)
+const myServer = async () => {
+  try {
+    await fastify.listen({ port: 3000 })
+  } catch (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
 }
+myServer();
 
 
 
