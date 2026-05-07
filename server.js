@@ -1,5 +1,5 @@
 import Fastify from "fastify";
-
+import { db } from "./src/db.js";
 
 // The { logger: true } option tells Fastify to print readable logs to your terminal
 const fastify = Fastify({ logger: true });
@@ -25,8 +25,19 @@ const formRequestSchema = {
 }
 fastify.post('/contact', { schema: formRequestSchema }, async (request, response) => {
   let formData = request.body;
-  fastify.log.info({ formData }, 'Form Data arrived!');
-  return { status: 'form data arrived' }
+
+  await db
+    .insertInto('submissions')
+    .values({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+    })
+    .execute();
+
+  // fastify.log.info({ formData }, 'Form Data arrived!');
+  return {status: 'form submitted'}
 })
 
 // Run the server
