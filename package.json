@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --env-file=.env --watch server.js",
-    "start": "node --env-file=.env server.js"
+    "start": "node --env-file=.env server.js",
+    "migrate": "node --env-file=.env src/migrate.js"
   },
   "keywords": [],
   "author": "",
