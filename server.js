@@ -2,6 +2,10 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { db } from "./src/db.js";
 
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 // The { logger: true } option tells Fastify to print readable logs to your terminal
 const fastify = Fastify({ logger: true });
 
