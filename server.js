@@ -23,21 +23,28 @@ const formRequestSchema = {
     }
   }
 }
-fastify.post('/contact', { schema: formRequestSchema }, async (request, response) => {
+fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) => {
   let formData = request.body;
 
-  await db
-    .insertInto('submissions')
-    .values({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      message: formData.message,
-    })
-    .execute();
+  try {
+    await db
+      .insertInto('submissions')
+      .values({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+      })
+      .execute();
 
-  // fastify.log.info({ formData }, 'Form Data arrived!');
-  return {status: 'form submitted'}
+    // fastify.log.info({ formData }, 'Form Data arrived!');
+    return { status: 'form submitted' }
+
+  } catch (error) {
+    reply.code(500);
+    fastify.log.error(error);
+    return { status: 'There was an error in submitting the form.' }
+  }
 })
 
 // Run the server
