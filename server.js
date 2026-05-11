@@ -6,7 +6,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const resendSandboxEmail = 'onboarding@resend.dev';
-// const domainEmail = 'noreply@jalanipaul.work';
+const domainEmail = 'noreply@jalanipaul.work';
 const myEmail = 'jalani2727@gmail.com';
 
 // The { logger: true } option tells Fastify to print readable logs to your terminal
@@ -50,7 +50,7 @@ fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) =
       .execute();
     // Send a Notification Email to myself
     await resend.emails.send({
-      from: resendSandboxEmail,
+      from: domainEmail,
       to: myEmail,
       subject: 'jalanipaul.work - Someone is trying to reach you through your portfolio',
       html: `<p>${formData.name} is trying to get in contact with you.</p>
@@ -59,17 +59,20 @@ fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) =
       <p>Message: ${formData.message}</p>`
     })
     // Send a Notification Email to the user
-    // await resend.emails.send({
-    //   from: domainEmail,
-    //   to: formData.email,
-    //   subject: 'Thank you for reaching out to me - 🍻',
-    //   html: `<p>Hello, ${formData.name} and thank you for taking a look through my portfolio!</p>
-    //   <p>I'll be sure to reach back out to you as soon, as possible.</p>
-    //   <p>Best,</p>
-    //   <p>Jalani</p>`
-    // })
+    await resend.emails.send({
+      from: domainEmail,
+      to: formData.email,
+      subject: 'Thank you for reaching out to me - 🍻',
+      html: `<p>Hello, ${formData.name} and thank you for taking a look through my portfolio!</p>
+      <p>I'll be sure to reach back out to you as soon, as possible.</p>
+      <p>Best,</p>
+      <p>Jalani</p>`
+    })
     // fastify.log.info({ formData }, 'Form Data arrived!');
-    return { status: 'form submitted' }
+    return { 
+      status: 'form submitted',
+      submitted: true,
+     }
 
   } catch (error) {
     reply.code(500);
@@ -81,7 +84,7 @@ fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) =
 // Run the server
 const myServer = async () => {
   try {
-    await fastify.listen({ port: 3000, host: '0.0.0.0' })
+    await fastify.listen({ port: 3001, host: '0.0.0.0' })
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)
