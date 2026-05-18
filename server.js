@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import fastifyRateLimit from "@fastify/rate-limit";
 import { db } from "./src/db.js";
 
 import { Resend } from "resend";
@@ -13,6 +14,11 @@ const fastify = Fastify({ logger: true });
 
 await fastify.register(cors, {
   origin: process.env.ALLOWED_ORIGIN,
+})
+await fastify.register(fastifyRateLimit, {
+  max: 10,
+  timeWindow: 1800000, // 30 minutes
+  allowList: ['127.0.0.1'],
 })
 
 // Declare a route
