@@ -5,7 +5,6 @@ import { db } from "./src/db.js";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const resendSandboxEmail = 'onboarding@resend.dev';
 const domainEmail = 'noreply@jalanipaul.work';
 const myEmail = 'jalani2727@gmail.com';
 
@@ -31,12 +30,17 @@ const formRequestSchema = {
       name: { type: 'string' },
       email: { type: 'string', format: 'email' },
       phone: { type: 'string' },
-      message: { type: 'string', minLength: 5 }
+      message: { type: 'string', minLength: 5 },
+      website: { type: 'string' },
     }
   }
 }
 fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) => {
   let formData = request.body;
+  
+  if (formData.website) {
+    return { status: 'Form Submitted' }
+  }
 
   try {
     await db
@@ -70,7 +74,7 @@ fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) =
     })
     // fastify.log.info({ formData }, 'Form Data arrived!');
     return { 
-      status: 'form submitted',
+      status: 'Form Submitted',
       submitted: true,
      }
 
