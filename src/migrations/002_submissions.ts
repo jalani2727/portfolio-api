@@ -1,6 +1,6 @@
-import {sql} from 'kysely';
+import { sql, type Kysely } from 'kysely';
 
-export async function up(db) {
+export async function up(db: Kysely<any>) {
     // Create columns for 
     // id
     // name
@@ -21,7 +21,7 @@ export async function up(db) {
         .execute();
 }
 
-export async function down(db) {
+export async function down(db: Kysely<any>) {
     await db.schema
         .dropTable('submissions')
         .execute();

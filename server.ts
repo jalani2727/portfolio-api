@@ -1,9 +1,17 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import fastifyRateLimit from "@fastify/rate-limit";
-import { db } from "./src/db.js";
+import { db } from "./src/db.ts";
 
 import { Resend } from "resend";
+
+interface RequestBody {
+  name: string,
+  email: string,
+  phone: string | null,
+  message: string,
+  website: string | undefined,
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const domainEmail = 'noreply@jalanipaul.work';
@@ -41,9 +49,9 @@ const formRequestSchema = {
     }
   }
 }
-fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) => {
+fastify.post<{ Body: RequestBody }>('/contact', { schema: formRequestSchema }, async (request, reply) => {
   let formData = request.body;
-  
+
   if (formData.website) {
     return { status: 'Form Submitted' }
   }
@@ -79,10 +87,10 @@ fastify.post('/contact', { schema: formRequestSchema }, async (request, reply) =
       <p>Jalani</p>`
     })
     // fastify.log.info({ formData }, 'Form Data arrived!');
-    return { 
+    return {
       status: 'Form Submitted',
       submitted: true,
-     }
+    }
 
   } catch (error) {
     reply.code(500);
