@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "node --env-file=.env --strip-types --watch server.ts",
     "start": "node --strip-types src/migrate.ts && node --strip-types server.ts",
