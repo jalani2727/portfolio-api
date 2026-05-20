@@ -8,9 +8,9 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "node --env-file=.env --strip-types --watch server.ts",
-    "start": "node --strip-types src/migrate.ts && node --strip-types server.ts",
-    "migrate": "node --strip-types --env-file=.env src/migrate.ts"
+    "dev": "node --env-file=.env --experimental-strip-types --watch server.ts",
+    "start": "node --experimental-strip-types src/migrate.ts && node --experimental-strip-types server.ts",
+    "migrate": "node --experimental-strip-types --env-file=.env src/migrate.ts"
   },
   "keywords": [],
   "author": "",
