@@ -3,7 +3,7 @@ import * as path from 'path';
 import { promises as fs } from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { Migrator } from 'kysely';
-import { db } from './db.js';
+import { db } from './db.ts';
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const migrationFolder = path.join(currentDirectory, 'migrations');
@@ -14,9 +14,9 @@ const migrator = new Migrator({
         async getMigrations() {
             const files = await fs.readdir(migrationFolder);
             const migrations = {};
-            for (const fileName of files.filter((file) => file.endsWith('.js'))) {
+            for (const fileName of files.filter((file) => file.endsWith('.ts'))) {
                 const fileUrl = pathToFileURL(path.join(migrationFolder, fileName)).href;
-                migrations[fileName.replace('.js', '')] = await import(fileUrl);
+                migrations[fileName.replace('.ts', '')] = await import(fileUrl);
             }
             return migrations;
         }
