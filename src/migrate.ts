@@ -13,7 +13,7 @@ const migrator = new Migrator({
     provider: {
         async getMigrations() {
             const files = await fs.readdir(migrationFolder);
-            const migrations = {};
+            const migrations: Record<string, any> = {};
             for (const fileName of files.filter((file) => file.endsWith('.ts'))) {
                 const fileUrl = pathToFileURL(path.join(migrationFolder, fileName)).href;
                 migrations[fileName.replace('.ts', '')] = await import(fileUrl);
