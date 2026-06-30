@@ -29,8 +29,7 @@ await fastify.register(fastifyRateLimit, {
   allowList: ['127.0.0.1'],
 })
 
-// Declare a route
-// putting a /health route is good practice for monitoring the status of a server
+
 fastify.get('/health', async (req, res) => {
   return { status: 'ok' }
 })
